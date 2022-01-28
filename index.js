@@ -1,7 +1,27 @@
 const inquirer = require(`inquirer`);
 const fs = require(`fs`);
+const Manager = require("./manager");
+const Engineer = require("./engineer");
+const Intern = require("./intern");
+
+manager = new Manager();
+engineer = new Engineer();
+intern = new Intern();
+
+const currentTeam = [];
 
 //TODO: Add questions that will be used to populate HTML page
+function askQuestion(){
+    inquirer.prompt([
+        {
+            name: "startQuestion",
+            type:"List",
+            choices:[]
+
+        }
+    ])
+}
+
 const managerQuestions = ()=>
 {
     return inquirer.prompt([
@@ -30,34 +50,33 @@ const managerQuestions = ()=>
             name: 'managerGithub',
             message: "What is your manager's GitHub username?",
         },
-    ]).then((answers) =>
-    {
+    ]).then((answers)=>{
+        // const newTeammate = new manager(answers.managerName, answers.managerID, answers.managerEmail, answers.managerOffice, answers.managerGithub);
+        // currentTeam.push(newTeammate);
         selectTeammates();
     })
 }
+
 const selectTeammates = ()=>
 {
-    inquirer.prompt()[
+    inquirer.prompt([
         {
-            type: 'choice',
+            type: 'list',
             name: 'teammateChoice',
             message: 'Do you want to add a new teammate?',
             choices: ['Engineer', 'Intern', 'No'],
         }
-    ].then((answers)=>
-    {
+    ]).then((answers)=>{
         if(answers.teammateChoice === 'Engineer')
         {
             engineerQuestions();
         }
-        else if(answers.teammateChoice ==='Intern')
+        else if(answers.teammateChoice === 'Intern')
         {
             internQuestions();
         }
-        else if(answers.teammateChoice ==='No')
-        {
-            generateHTML();
-        }
+        else
+        console.log('No!')
     })
 }
 const engineerQuestions = ()=>
@@ -115,26 +134,37 @@ const internQuestions = ()=>
     })
 }
 //This a function to generate the HTML page based upon the user inputs above
-const generateHTML = ({managerName, managerID, managerOffice, managerEmail, managerGithub, engineerName, engineerID, engineerEmail, engineerGithub, internName, internID, internEmail, internSchool}) =>
-`<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>`;
+// const generateHTML = ({managerName, managerID, managerOffice, managerEmail, managerGithub}) =>
+// `<!DOCTYPE html>
+// <html lang="en">
+// <head>
+//   <meta charset="UTF-8">
+//   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+//   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+//   <title>Document</title>
+// </head>
+// <body>
+//   <div class="jumbotron jumbotron-fluid">
+//   <div class="container">
+//     <h3>Example heading <span class="badge badge-secondary">Contact Me</span></h3>
+//     <ul class="list-group">
+//     <li class="list-group-item">Manager's Name: ${managerName}</li>
+//       <li class="list-group-item">Manager's ID: ${managerID}</li>
+//       <li class="list-group-item">Manager Office: ${managerOffice}</li>
+//       <li class="list-group-item">Manager's Email: ${managerEmail}</li>
+//       <li class="list-group-item">Manager's Github: ${managerGithub}</li>
+//     </ul>
+//   </div>
+// </div>
+// </body>
+// </html>`;
 
 // TODO: Create a function to initialize app
 const init = () =>{
     managerQuestions()
-    .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
-    .then(() => console.log("Successfully created HTML"))
-    .catch((err) => console.error(err));
+    // .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
+    // .then(() => console.log("Successfully created HTML"))
+    // .catch((err) => console.error(err));
 
 }
 // Function call to initialize app
