@@ -4,24 +4,10 @@ const Manager = require("./manager");
 const Engineer = require("./engineer");
 const Intern = require("./intern");
 
-manager = new Manager();
-engineer = new Engineer();
-intern = new Intern();
 
 const currentTeam = [];
 
 //TODO: Add questions that will be used to populate HTML page
-function askQuestion(){
-    inquirer.prompt([
-        {
-            name: "startQuestion",
-            type:"List",
-            choices:[]
-
-        }
-    ])
-}
-
 const managerQuestions = ()=>
 {
     return inquirer.prompt([
@@ -51,8 +37,9 @@ const managerQuestions = ()=>
             message: "What is your manager's GitHub username?",
         },
     ]).then((answers)=>{
-        // const newTeammate = new manager(answers.managerName, answers.managerID, answers.managerEmail, answers.managerOffice, answers.managerGithub);
-        // currentTeam.push(newTeammate);
+        const newManagers = new Manager(answers.managerName, answers.managerID, answers.managerEmail, answers.managerOffice, answers.managerGithub);
+        currentTeam.push(newManagers);
+        console.log(newManagers);
         selectTeammates();
     })
 }
@@ -76,7 +63,7 @@ const selectTeammates = ()=>
             internQuestions();
         }
         else
-        console.log('No!')
+        generateHTML();
     })
 }
 const engineerQuestions = ()=>
@@ -134,30 +121,26 @@ const internQuestions = ()=>
     })
 }
 //This a function to generate the HTML page based upon the user inputs above
-// const generateHTML = ({managerName, managerID, managerOffice, managerEmail, managerGithub}) =>
-// `<!DOCTYPE html>
-// <html lang="en">
-// <head>
-//   <meta charset="UTF-8">
-//   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-//   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-//   <title>Document</title>
-// </head>
-// <body>
-//   <div class="jumbotron jumbotron-fluid">
-//   <div class="container">
-//     <h3>Example heading <span class="badge badge-secondary">Contact Me</span></h3>
-//     <ul class="list-group">
-//     <li class="list-group-item">Manager's Name: ${managerName}</li>
-//       <li class="list-group-item">Manager's ID: ${managerID}</li>
-//       <li class="list-group-item">Manager Office: ${managerOffice}</li>
-//       <li class="list-group-item">Manager's Email: ${managerEmail}</li>
-//       <li class="list-group-item">Manager's Github: ${managerGithub}</li>
-//     </ul>
-//   </div>
-// </div>
-// </body>
-// </html>`;
+const generateHTML = ({currentTeam}) =>
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <title>Document</title>
+</head>
+<body>
+  <div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h3>Example heading <span class="badge badge-secondary">Contact Me</span></h3>
+    <ul class="list-group">
+    <li class="list-group-item">Current Team: ${currentTeam}</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>`;
 
 // TODO: Create a function to initialize app
 const init = () =>{
