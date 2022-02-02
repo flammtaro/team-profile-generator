@@ -38,13 +38,13 @@ const managerQuestions = ()=>
         },
     ]).then((answers)=>{
         const newManager = new Manager(answers.managerName, answers.managerID, answers.managerEmail, answers.managerOffice, answers.managerGithub);
+        createManagerCard(newManager, "Manager")
         currentTeam.push(newManager);
-        createCard(newManager, "Manager")
-        console.log(currentTeam);
         selectTeammates();
     })
 }
 
+//
 const selectTeammates = ()=>
 {
     inquirer.prompt([
@@ -57,10 +57,10 @@ const selectTeammates = ()=>
     ]).then((answers)=>{
         console.log(answers.teammateChoice);
         switch(answers.teammateChoice){
-            case "Add Engineer":
+            case "Engineer":
                 engineerQuestions();
                 break;
-            case "Add Intern":
+            case "Intern":
                 internQuestions();
                 break;
             case "Finish":
@@ -93,8 +93,8 @@ const engineerQuestions = ()=>
         },
     ]).then((answers)=>{
         const newEngineer = new Engineer(answers.engineerName, answers.engineerID, answers.engineerEmail, answers.engineerGithub);
-        createCard(newEngineer, "Engineer");
-        team.push(newEngineer);
+        createEngineerCard(newEngineer, "Engineer");
+        currentTeam.push(newEngineer);
         selectTeammates();
     })
 }
@@ -123,39 +123,58 @@ const internQuestions = ()=>
         },
     ]).then((answers)=>{
         const newIntern = new Intern(answers.internName, answers.internID, answers.internEmail, answers.internSchool);
-        createCard(newIntern, "Intern");
-        team.push(newIntern);
+        createInternCard(newIntern, "Intern");
+        currentTeam.push(newIntern);
         selectTeammates();
     })
 }
 
-const createCard = (person, role) => {
-    let extra;
-    let info;
-    switch (role) {
-        case "Manager":
-            extra = "Office Number"
-            info = person.office
-            break;
-        case "Engineer":
-            extra = "Github"
-            info = `<a href="https://github.com/${person.github}" target="_blank">${person.github}</a>`
-            break;
-        case "Intern":
-            extra = "School"
-            info = person.school
-            break;
+const createManagerCard = ({managerName, managerID, managerEmail, managerOffice, managerGithub}) =>{
 
-    }
     const cardHtml =
   `<div class="card col-3 mb-3">
       <div class="card-body">
-          <h5 class="card-title">${person.name}</h5>
-          <h6 class="card-subtitle">${role}</h6>
+          <h1 class="card-title">${managerName}</h1>
+          <h4 class="card-subtitle">Manager</h4>
           <ul class="card-text">
-              <li>ID: ${person.id}</li>
-              <li>Email: <a href="mailto:${person.email}" target="_blank" class="btn btn-primary">${person.email}</a></li>
-              <li>${extra}: ${info}</li>
+              <li><strong>ID #: </strong>${managerID}</li>
+              <li><strong>Email: </strong>${managerEmail}</li>
+              <li><strong>Office #: </strong>${managerOffice}</li>
+              <li><strong>Github Username: </strong>${managerGithub}</li>
+          </ul>
+      </div>
+  </div>`
+  teamCards.push(cardHtml)
+};
+
+const createEngineerCard = ({engineerName, engineerID, engineerEmail, engineerGithub}) =>{
+
+    const cardHtml =
+  `<div class="card col-3 mb-3">
+      <div class="card-body">
+          <h1 class="card-title">${engineerName}</h1>
+          <h4 class="card-subtitle">Engineer</h4>
+          <ul class="card-text">
+              <li><strong>ID #: </strong>${engineerID}</li>
+              <li><strong>Email: </strong>${engineerEmail}</li>
+              <li><strong>Github Username: </strong>${engineerGithub}</li>
+          </ul>
+      </div>
+  </div>`
+  teamCards.push(cardHtml)
+};
+
+const createInternCard = ({internName, internID, internEmail, internSchool}) =>{
+
+    const cardHtml =
+  `<div class="card col-3 mb-3">
+      <div class="card-body">
+          <h1 class="card-title">${internName}</h1>
+          <h4 class="card-subtitle">Intern</h4>
+          <ul class="card-text">
+              <li><strong>ID: </strong>${internID}</li>
+              <li><strong>Email: </strong>${internEmail}</li>
+              <li><strong>School: </strong>${internSchool}</li>
           </ul>
       </div>
   </div>`
@@ -180,9 +199,9 @@ const template =
 <body>
   <div class="jumbotron jumbotron-fluid">
   <div class="container">
-    <h3>Example heading <span class="badge badge-secondary">Contact Me</span></h3>
+    <h3>Current Team</h3>
     <ul class="list-group">
-    <li class="list-group-item">Current Team: ${cards}</li>
+    <li class="list-group-item">${cards}</li>
     </ul>
   </div>
 </div>

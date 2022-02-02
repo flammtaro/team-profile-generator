@@ -1,10 +1,10 @@
 class Manager {
-    constructor(name, id, email, office, github) {
-        this.name = name
-        this.id = id
-        this.email = email
-        this.office = office
-        this.github = github
+    constructor(managerName, managerID, managerEmail, managerOffice, managerGithub) {
+        this.managerName = managerName;
+        this.managerID = managerID;
+        this.managerEmail = managerEmail;
+        this.managerOffice = managerOffice;
+        this.managerGithub = managerGithub;
     }
 }
 

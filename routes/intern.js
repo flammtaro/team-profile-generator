@@ -1,11 +1,11 @@
 class Intern{
 
-    constructor(internName, internID, internEmail, internGithub)
+    constructor(internName, internID, internEmail, internSchool)
     {
         this.internName = internName;
         this.internID = internID;
         this.internEmail = internEmail;
-        this.internGithub = internGithub;
+        this.internSchool = internSchool;
     }
 }
 
