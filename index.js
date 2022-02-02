@@ -44,7 +44,7 @@ const managerQuestions = ()=>
     })
 }
 
-//
+//Inquirer prompt to proceed or end the teammate selection process
 const selectTeammates = ()=>
 {
     inquirer.prompt([
