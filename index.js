@@ -1,9 +1,9 @@
 const inquirer = require(`inquirer`);
 const fs = require(`fs`);
-const Manager = require("./routes/manager");
-const Engineer = require("./routes/engineer");
-const Intern = require("./routes/intern");
-
+const Manager = require("./lib/manager");
+const Engineer = require("./lib/engineer");
+const Intern = require("./lib/intern");
+let teamName = "";
 const teamCards = [];
 const currentTeam = [];
 
@@ -11,6 +11,11 @@ const currentTeam = [];
 const managerQuestions = ()=>
 {
     return inquirer.prompt([
+        {
+            type: "input",
+            name: "teamName",
+            message: "What is the team's name?",
+          },
         {
             type: 'input',
             name: 'managerName',
@@ -31,13 +36,9 @@ const managerQuestions = ()=>
             name: 'managerOffice',
             message: "What is your manager's office number?",
         },
-        {
-            type: 'input',
-            name: 'managerGithub',
-            message: "What is your manager's GitHub username?",
-        },
     ]).then((answers)=>{
-        const newManager = new Manager(answers.managerName, answers.managerID, answers.managerEmail, answers.managerOffice, answers.managerGithub);
+        teamName = answers.teamName;
+        const newManager = new Manager(answers.managerName, answers.managerID, answers.managerEmail, answers.managerOffice);
         createManagerCard(newManager, "Manager")
         currentTeam.push(newManager);
         selectTeammates();
@@ -129,52 +130,51 @@ const internQuestions = ()=>
     })
 }
 
-const createManagerCard = ({managerName, managerID, managerEmail, managerOffice, managerGithub}) =>{
+const createManagerCard = manager =>{
 
     const cardHtml =
   `<div class="card col-3 mb-3">
       <div class="card-body">
-          <h1 class="card-title">${managerName}</h1>
+          <h1 class="card-title">${manager.getName()}</h1>
           <h4 class="card-subtitle">Manager</h4>
           <ul class="card-text">
-              <li><strong>ID #: </strong>${managerID}</li>
-              <li><strong>Email: </strong>${managerEmail}</li>
-              <li><strong>Office #: </strong>${managerOffice}</li>
-              <li><strong>Github Username: </strong>${managerGithub}</li>
+              <li><strong>ID #: </strong>${manager.getId()}</li>
+              <li><strong>Email: </strong>${manager.getEmail()}</li>
+              <li><strong>Office #: </strong>${manager.getOfficeNumber()}</li>
           </ul>
       </div>
   </div>`
   teamCards.push(cardHtml)
 };
 
-const createEngineerCard = ({engineerName, engineerID, engineerEmail, engineerGithub}) =>{
+const createEngineerCard = engineer =>{
 
     const cardHtml =
   `<div class="card col-3 mb-3">
       <div class="card-body">
-          <h1 class="card-title">${engineerName}</h1>
+          <h1 class="card-title">${engineer.getName()}</h1>
           <h4 class="card-subtitle">Engineer</h4>
           <ul class="card-text">
-              <li><strong>ID #: </strong>${engineerID}</li>
-              <li><strong>Email: </strong>${engineerEmail}</li>
-              <li><strong>Github Username: </strong>${engineerGithub}</li>
+              <li><strong>ID #: </strong>${engineer.getId()}</li>
+              <li><strong>Email: </strong>${engineer.getEmail()}</li>
+              <li><strong>Github Username: </strong>${engineer.getGithub()}</li>
           </ul>
       </div>
   </div>`
   teamCards.push(cardHtml)
 };
 
-const createInternCard = ({internName, internID, internEmail, internSchool}) =>{
+const createInternCard = intern =>{
 
     const cardHtml =
   `<div class="card col-3 mb-3">
       <div class="card-body">
-          <h1 class="card-title">${internName}</h1>
+          <h1 class="card-title">${intern.getName()}</h1>
           <h4 class="card-subtitle">Intern</h4>
           <ul class="card-text">
-              <li><strong>ID: </strong>${internID}</li>
-              <li><strong>Email: </strong>${internEmail}</li>
-              <li><strong>School: </strong>${internSchool}</li>
+              <li><strong>ID: </strong>${intern.getId()}</li>
+              <li><strong>Email: </strong>${intern.getEmail()}</li>
+              <li><strong>School: </strong>${intern.getSchool()}</li>
           </ul>
       </div>
   </div>`
@@ -188,24 +188,33 @@ const generateHTML = () => {
         cards += element
 });
 const template = 
-`<!DOCTYPE html>
+`<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <title>Team Profile Generator</title>
-</head>
-<body>
-  <div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h3>Current Team</h3>
-    <ul class="list-group">
-    <li class="list-group-item">${cards}</li>
-    </ul>
-  </div>
-</div>
-</body>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>${teamName}</title>
+  </head>
+  <body>
+    <header>
+        <h1>Welcome to ${teamName}'s team!</h1>
+    </header>  
+    <hr>
+    <main class="container">
+            <div class="row ">
+              ${cards}
+            </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="./assets/js/script.js"></script>
+  </body>
 </html>`
 
     fs.writeFile(`index.html`, template, (err)=>

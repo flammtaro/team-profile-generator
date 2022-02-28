@@ -1,7 +1,19 @@
-const Engineer = require('../routes/engineer');
+const Engineer = require("../lib/Engineer");
 
-test("Can add GitHub account to the constructor", () => {
-    const changedValue = "githubaccount";
-    const engi = new Engineer("Reid", 1, "test@test.com", changedValue);
-    expect(engi.engineerGithub).toBe(changedValue);
-  });
+test("Can set GitHUb account via constructor", () => {
+  const testValue = "GitHubUser";
+  const e = new Engineer("Foo", 1, "test@test.com", testValue);
+  expect(e.github).toBe(testValue);
+});
+
+test("getRole() should return \"Engineer\"", () => {
+  const testValue = "Engineer";
+  const e = new Engineer("Foo", 1, "test@test.com", "GitHubUser");
+  expect(e.getRole()).toBe(testValue);
+});
+
+test("Can get GitHub username via getGithub()", () => {
+  const testValue = "GitHubUser";
+  const e = new Engineer("Foo", 1, "test@test.com", testValue);
+  expect(e.getGithub()).toBe(testValue);
+});
