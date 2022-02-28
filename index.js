@@ -201,13 +201,18 @@ const template =
     <title>${teamName}</title>
   </head>
   <body>
-    <header>
-        <h1>Welcome to ${teamName}'s team!</h1>
-    </header>  
-    <hr>
+  <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 jumbotron mb-3 team-heading">
+                <h1 class="text-center">${teamName}</h1>
+            </div>
+        </div>
+    </div>
     <main class="container">
             <div class="row ">
-              ${cards}
+                <<div class="team-area col-12 d-flex justify-content-center">
+                    ${cards}
+                 </div>
             </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
