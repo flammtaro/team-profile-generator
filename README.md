@@ -13,7 +13,7 @@ To install this project, you need to:
 -Open the code in Visual Studio Code
 
 ## Usage
-This code contains an index.js file that runs the program. To do so, you open your terminal, and type node index.js. Then, a series of prompts will appear that will ask you questions. After you are finished, the index.html will be generated, and your webpage can be viewed in your browser. A video of the current version of the program can be seen here: [![Press to Play Video](https://i.imgur.com/P2MnyKn.png)](https://youtu.be/M7W7UVwJkac). 
+This code contains an index.js file that runs the program. To do so, you open your terminal, and type node index.js. Then, a series of prompts will appear that will ask you questions. After you are finished, the index.html will be generated, and your webpage can be viewed in your browser. A video of the current version of the program can be seen here: https://youtu.be/F3hmvP4o3ZM. 
 
 ## Credits
 This project was created by Reid Somers Flamm. 
